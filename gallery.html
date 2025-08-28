@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gallery | City College Sustainability</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="page-wrapper">
+      <!-- Header / Navbar -->
+      <header>
+        <nav class="navbar">
+          <div class="logo">
+            <a href="index.html"><h1>City College</h1></a>
+          </div>
+          <div class="nav-right">
+            <ul class="nav-links">
+              <li><a href="index.html">Home</a></li>
+              <li><a href="about.html">About</a></li>
+              <li><a href="initiatives.html">Initiatives</a></li>
+              <li><a href="blog.html">Blog</a></li>
+              <li><a href="gallery.html" class="active">Gallery</a></li>
+              <li><a href="contact.html">Contact</a></li>
+              <li id="addProjectLink" style="display: none">
+                <a href="views/add-project.html">Add Project</a>
+              </li>
+              <li><a href="login.html">Login</a></li>
+            </ul>
+            <button id="darkModeToggle">🌓</button>
+          </div>
+        </nav>
+      </header>
+
+      <!-- Gallery Section -->
+      <main class="container gallery">
+        <h2>Photo Gallery</h2>
+        <p>
+          Take a look at our sustainability activities and beautiful green
+          spaces.
+        </p>
+
+        <section class="image-slider">
+          <button class="arrow left-arrow">&#10094;</button>
+
+          <div class="slider-track">
+            <div class="slide">
+              <img src="images/treeplanting.jpeg" alt="Tree Planting" />
+              <div class="caption">Tree Planting</div>
+            </div>
+            <div class="slide">
+              <img src="images/solarpanel.jpeg" alt="Solar Panels" />
+              <div class="caption">Solar Panels</div>
+            </div>
+            <div class="slide">
+              <img
+                src="images/recyclingcampaign.jpeg"
+                alt="Recycling Campaign"
+              />
+              <div class="caption">Recycling Campaign</div>
+            </div>
+            <div class="slide">
+              <img src="images/bikesharing.jpeg" alt="Bike Sharing" />
+              <div class="caption">Bike Sharing</div>
+            </div>
+            <div class="slide">
+              <img
+                src="images/studentvolunteers.jpeg"
+                alt="Student Volunteers"
+              />
+              <div class="caption">Student Volunteers</div>
+            </div>
+          </div>
+
+          <button class="arrow right-arrow">&#10095;</button>
+          <div class="slider-dots"></div>
+
+          <div class="thumbnail-strip">
+            <img
+              src="images/treeplanting.jpeg"
+              data-index="0"
+              alt="Tree Planting"
+            />
+            <img
+              src="images/solarpanel.jpeg"
+              data-index="1"
+              alt="Solar Panels"
+            />
+            <img
+              src="images/recyclingcampaign.jpeg"
+              data-index="2"
+              alt="Recycling Campaign"
+            />
+            <img
+              src="images/bikesharing.jpeg"
+              data-index="3"
+              alt="Bike Sharing"
+            />
+            <img
+              src="images/studentvolunteers.jpeg"
+              data-index="4"
+              alt="Student Volunteers"
+            />
+          </div>
+        </section>
+      </main>
+
+      <!-- Footer -->
+      <footer>
+        <p>&copy; 2025 City College. All rights reserved.</p>
+        <div class="socials">
+          <a href="#">Facebook</a> | <a href="#">Instagram</a> |
+          <a href="#">LinkedIn</a>
+        </div>
+      </footer>
+    </div>
+
+    <script src="js/script.js"></script>
+  </body>
+</html>

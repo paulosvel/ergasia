@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login | City College Sustainability</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="page-wrapper">
+      <!-- Header / Navbar -->
+      <header>
+        <nav class="navbar">
+          <div class="logo">
+            <a href="index.html"><h1>City College</h1></a>
+          </div>
+          <div class="nav-right">
+            <ul class="nav-links">
+              <li><a href="index.html">Home</a></li>
+              <li><a href="about.html">About</a></li>
+              <li><a href="initiatives.html">Initiatives</a></li>
+              <li><a href="blog.html">Blog</a></li>
+              <li><a href="gallery.html">Gallery</a></li>
+              <li><a href="contact.html">Contact</a></li>
+              <li id="addProjectLink" style="display: none">
+                <a href="views/add-project.html">Add Project</a>
+              </li>
+              <li><a href="login.html" class="active">Login</a></li>
+            </ul>
+            <button id="darkModeToggle">🌓</button>
+          </div>
+        </nav>
+      </header>
+
+      <!-- Login Section -->
+      <main class="container auth">
+        <h2>Login to Your Account</h2>
+        <form id="loginForm" class="auth-form">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" required />
+
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" required />
+
+          <button type="submit" class="btn">Login</button>
+          <p id="loginMessage" class="form-message"></p>
+
+          <p class="auth-switch">
+            Don't have an account?
+            <a href="register.html">Register here</a>
+          </p>
+        </form>
+      </main>
+
+      <!-- Footer -->
+      <footer>
+        <p>&copy; 2025 City College. All rights reserved.</p>
+        <div class="socials">
+          <a href="#">Facebook</a> | <a href="#">Instagram</a> |
+          <a href="#">LinkedIn</a>
+        </div>
+      </footer>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script>
+      document
+        .getElementById("loginForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+          const email = document.getElementById("email").value.trim();
+          const password = document.getElementById("password").value;
+          const msg = document.getElementById("loginMessage");
+
+          try {
+            const response = await fetch(
+              "http://localhost:5000/api/auth/login",
+              {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, password }),
+              }
+            );
+
+            const data = await response.json();
+
+            if (!response.ok) {
+              msg.textContent = "❌ " + (data.message || "Login failed.");
+              msg.style.color = "red";
+            } else {
+              msg.textContent =
+                "✅ Login successful! Welcome, " + data.user.fullname;
+              msg.style.color = "green";
+              document.getElementById("loginForm").reset();
+              setTimeout(() => (window.location.href = "index.html"), 1000);
+            }
+          } catch (err) {
+            msg.textContent = "❌ Network error. Please try again.";
+            msg.style.color = "red";
+          }
+        });
+    </script>
+  </body>
+</html>

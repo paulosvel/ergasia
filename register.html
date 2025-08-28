@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register | City College Sustainability</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="page-wrapper">
+      <!-- Header / Navbar -->
+      <header>
+        <nav class="navbar">
+          <div class="logo">
+            <a href="index.html"><h1>City College</h1></a>
+          </div>
+          <div class="nav-right">
+            <ul class="nav-links">
+              <li><a href="index.html">Home</a></li>
+              <li><a href="about.html">About</a></li>
+              <li><a href="initiatives.html">Initiatives</a></li>
+              <li><a href="blog.html">Blog</a></li>
+              <li><a href="gallery.html">Gallery</a></li>
+              <li><a href="contact.html">Contact</a></li>
+              <li id="addProjectLink" style="display: none">
+                <a href="views/add-project.html">Add Project</a>
+              </li>
+              <li><a href="login.html">Login</a></li>
+            </ul>
+            <button id="darkModeToggle">🌓</button>
+          </div>
+        </nav>
+      </header>
+
+      <!-- Registration Section -->
+      <main class="container auth">
+        <h2>Create an Account</h2>
+        <form id="registerForm" class="auth-form">
+          <label for="fullname">Full Name</label>
+          <input type="text" id="fullname" name="fullname" required />
+
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" required />
+
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" required />
+
+          <label for="confirmPassword">Confirm Password</label>
+          <input
+            type="password"
+            id="confirmPassword"
+            name="confirmPassword"
+            required
+          />
+
+          <button type="submit" class="btn">Register</button>
+          <p id="registerMessage" class="form-message"></p>
+
+          <p class="auth-switch">
+            Already have an account?
+            <a href="login.html">Login here</a>
+          </p>
+        </form>
+      </main>
+
+      <!-- Footer -->
+      <footer>
+        <p>&copy; 2025 City College. All rights reserved.</p>
+        <div class="socials">
+          <a href="#">Facebook</a> | <a href="#">Instagram</a> |
+          <a href="#">LinkedIn</a>
+        </div>
+      </footer>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script>
+      document
+        .getElementById("registerForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+          const fullname = document.getElementById("fullname").value.trim();
+          const email = document.getElementById("email").value.trim();
+          const password = document.getElementById("password").value;
+          const confirmPassword =
+            document.getElementById("confirmPassword").value;
+          const msg = document.getElementById("registerMessage");
+
+          if (password !== confirmPassword) {
+            msg.textContent = "❌ Passwords do not match.";
+            msg.style.color = "red";
+            return;
+          }
+
+          try {
+            const response = await fetch(
+              "http://localhost:5000/api/auth/register",
+              {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ fullname, email, password }),
+              }
+            );
+
+            const data = await response.json();
+
+            if (!response.ok) {
+              msg.textContent =
+                "❌ " + (data.message || "Something went wrong.");
+              msg.style.color = "red";
+            } else {
+              msg.textContent = "✅ Registration successful!";
+              msg.style.color = "green";
+              document.getElementById("registerForm").reset();
+            }
+          } catch (err) {
+            msg.textContent = "❌ Network error. Please try again.";
+            msg.style.color = "red";
+          }
+        });
+    </script>
+  </body>
+</html>
