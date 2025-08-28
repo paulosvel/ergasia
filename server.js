@@ -43,6 +43,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Static files (HTML, CSS, JS)
 app.use(express.static(path.join(__dirname, "public")));
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Debug incoming requests
 app.use((req, res, next) => {

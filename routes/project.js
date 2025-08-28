@@ -1,23 +1,23 @@
-const express = require('express');
-const multer = require('multer');
-const Project = require('../models/Project');
+const express = require("express");
+const multer = require("multer");
+const Project = require("../models/Project");
 
 const router = express.Router();
 
 // Multer setup for file uploads
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'uploads/'); // Save images in "uploads" folder
+    cb(null, "uploads/"); // Save images in "uploads" folder
   },
   filename: (req, file, cb) => {
-    cb(null, Date.now() + '-' + file.originalname);
-  }
+    cb(null, Date.now() + "-" + file.originalname);
+  },
 });
 
 const upload = multer({ storage });
 
 // Add new project
-router.post('/add', upload.single('image'), async (req, res) => {
+router.post("/add", upload.single("image"), async (req, res) => {
   try {
     const {
       title,
@@ -25,11 +25,11 @@ router.post('/add', upload.single('image'), async (req, res) => {
       type,
       description,
       partners,
-      responsible,
-      email,
+      responsiblePerson,
+      responsibleEmail,
       year,
       status,
-      location
+      location,
     } = req.body;
 
     const project = new Project({
@@ -38,20 +38,20 @@ router.post('/add', upload.single('image'), async (req, res) => {
       type,
       description,
       partners,
-      responsiblePerson: responsible,
-      responsibleEmail: email,
+      responsiblePerson,
+      responsibleEmail,
       year,
       status,
       location,
-      image: req.file ? req.file.filename : null
+      image: req.file ? req.file.filename : null,
     });
 
     await project.save();
-    console.log('✅ Project created:', project);
-    res.status(201).json({ message: 'Project created successfully!' });
+    console.log("✅ Project created:", project);
+    res.status(201).json({ message: "Project created successfully!" });
   } catch (err) {
-    console.error('❌ Project creation failed:', err);
-    res.status(500).json({ error: 'Failed to create project' });
+    console.error("❌ Project creation failed:", err);
+    res.status(500).json({ error: "Failed to create project" });
   }
 });
 
