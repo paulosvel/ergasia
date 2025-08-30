@@ -58,7 +58,6 @@ const blogPostSchema = new mongoose.Schema(
     },
     slug: {
       type: String,
-      required: true,
       unique: true,
       lowercase: true,
       trim: true,
@@ -168,7 +167,7 @@ const blogPostSchema = new mongoose.Schema(
 );
 
 // Indexes for performance
-blogPostSchema.index({ slug: 1 });
+blogPostSchema.index({ slug: 1 }, { unique: true });
 blogPostSchema.index({ status: 1, publishedAt: -1 });
 blogPostSchema.index({ author: 1 });
 blogPostSchema.index({ categories: 1 });
@@ -201,14 +200,38 @@ blogPostSchema.virtual("url").get(function () {
 });
 
 // Pre-save middleware to generate slug
-blogPostSchema.pre("save", function (next) {
-  if (this.isModified("title") && !this.slug) {
-    this.slug = this.title
+blogPostSchema.pre("save", async function (next) {
+  // Generate slug if title exists and slug is missing (for both new and modified documents)
+  if (this.title && !this.slug) {
+    let baseSlug = this.title
       .toLowerCase()
       .replace(/[^\w\s-]/g, "")
       .replace(/\s+/g, "-")
       .replace(/-+/g, "-")
       .trim("-");
+
+    // Check if slug already exists and add timestamp if needed
+    let slug = baseSlug;
+    let counter = 1;
+
+    while (true) {
+      const existingPost = await this.constructor.findOne({
+        slug,
+        _id: { $ne: this._id },
+      });
+      if (!existingPost) {
+        break;
+      }
+      slug = `${baseSlug}-${counter}`;
+      counter++;
+    }
+
+    this.slug = slug;
+  }
+
+  // Ensure slug exists before saving
+  if (!this.slug) {
+    return next(new Error("Slug is required. Please provide a title."));
   }
 
   // Calculate reading time (average 200 words per minute)

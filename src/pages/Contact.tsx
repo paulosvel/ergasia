@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form'
 import emailjs from '@emailjs/browser'
 import { useThemeStore } from '@stores/themeStore'
 import toast from 'react-hot-toast'
-import { getEmailJSConfig, isEmailJSConfigured } from '../config/emailjs'
+import { getEmailJSConfig  } from '../config/emailjs'
 import { 
   Mail, 
   Phone, 
@@ -37,11 +37,7 @@ const Contact = () => {
 
   const onSubmit = async (data: ContactForm) => {
     setIsSubmitting(true)
-    
     try {
-      if (!isEmailJSConfigured()) {
-        throw new Error('EmailJS is not configured. Please set up your credentials.')
-      }
 
       const config = getEmailJSConfig()
       const result = await emailjs.sendForm(
@@ -50,6 +46,7 @@ const Contact = () => {
         formRef.current!,
         config.PUBLIC_KEY
       )
+      console.log('result', result)
 
       if (result.status === 200) {
         toast.success('Message sent successfully! We\'ll get back to you soon.')

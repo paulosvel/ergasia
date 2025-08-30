@@ -191,7 +191,7 @@ export const useBlogStore = create<BlogState>((set, get) => ({
       return response.data
     } catch (error: any) {
       set({
-        error: error.message || 'Failed to create blog post',
+        error: error.response?.data?.errors?.map((err: any) => err.msg).join(', ') || error.message || 'Failed to create blog post',
         isLoading: false
       })
       throw error

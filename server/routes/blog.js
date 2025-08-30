@@ -295,9 +295,30 @@ router.post(
       });
     } catch (error) {
       console.error("Create blog post error:", error);
+
+      // Handle specific validation errors
+      if (error.name === "ValidationError") {
+        return res.status(400).json({
+          success: false,
+          message: "Validation failed",
+          errors: Object.values(error.errors).map((err) => ({
+            field: err.path,
+            message: err.message,
+          })),
+        });
+      }
+
+      // Handle duplicate key errors (e.g., duplicate slug)
+      if (error.code === 11000) {
+        return res.status(400).json({
+          success: false,
+          message: "A blog post with this title already exists",
+        });
+      }
+
       res.status(500).json({
         success: false,
-        message: "Server error while creating blog post",
+        message: error.message || "Server error while creating blog post",
       });
     }
   }

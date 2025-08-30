@@ -408,19 +408,19 @@ const Blog = () => {
                             <div className="flex items-center gap-1">
                               <HeartIcon className={`w-4 h-4 ${isDark ? 'text-gray-400' : 'text-gray-500'}`} />
                               <span className={isDark ? 'text-gray-300' : 'text-gray-600'}>
-                                {post.likes.length}
+                                {post?.likes?.length}
                               </span>
                             </div>
                             <div className="flex items-center gap-1">
                               <ChatBubbleLeftIcon className={`w-4 h-4 ${isDark ? 'text-gray-400' : 'text-gray-500'}`} />
                               <span className={isDark ? 'text-gray-300' : 'text-gray-600'}>
-                                {post.comments.length}
+                                {post?.comments?.length}
                               </span>
                             </div>
                             <div className="flex items-center gap-2">
                               <CalendarIcon className={`w-4 h-4 ${isDark ? 'text-gray-400' : 'text-gray-500'}`} />
                               <span className={isDark ? 'text-gray-300' : 'text-gray-600'}>
-                                {formatDate(post.publishedAt || post.createdAt)}
+                                {formatDate(post?.publishedAt || post?.createdAt)}
                               </span>
                             </div>
                           </div>

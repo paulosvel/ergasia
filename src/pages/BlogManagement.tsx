@@ -221,7 +221,7 @@ const BlogManagement = () => {
               className="btn-primary flex items-center gap-2 mt-4 sm:mt-0"
             >
               <Plus className="w-4 h-4" />
-              New Post
+              New Blog Post
             </button>
           </div>
 

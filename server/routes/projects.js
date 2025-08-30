@@ -58,7 +58,21 @@ const createProjectValidation = [
     .isLength({ min: 10, max: 2000 })
     .withMessage("Description must be between 10 and 2000 characters"),
   body("departments")
-    .isArray({ min: 1 })
+    .custom((value) => {
+      // Handle both string and array formats
+      if (typeof value === "string") {
+        return value.trim().length > 0;
+      }
+      if (Array.isArray(value)) {
+        return (
+          value.length > 0 &&
+          value.every(
+            (item) => typeof item === "string" && item.trim().length > 0
+          )
+        );
+      }
+      return false;
+    })
     .withMessage("At least one department must be selected"),
   body("type")
     .isIn([

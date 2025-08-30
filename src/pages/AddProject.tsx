@@ -137,8 +137,8 @@ const AddProject = () => {
       toast.success('Project created successfully!')
       navigate('/projects')
     } catch (error: any) {
-      console.error('Error creating project:', error)
-      toast.error(error.response?.data?.message || 'Failed to create project')
+      console.error('Error creating project:', error) 
+      toast.error(error.response?.data?.errors?.map((err: any) => err.msg).join(', ') || 'Failed to create project')
     } finally {
       setIsSubmitting(false)
     }

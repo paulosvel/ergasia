@@ -157,11 +157,11 @@ const Dashboard = () => {
   }
 
   const pendingComments = posts.reduce((total, post) => 
-    total + post.comments.filter(comment => !comment.isApproved).length, 0
+    total + post.comments?.filter(comment => !comment.isApproved).length, 0
   )
 
   const totalComments = posts.reduce((total, post) => 
-    total + post.comments.length, 0
+    total + post.comments?.length, 0
   )
 
   return (
@@ -200,7 +200,7 @@ const Dashboard = () => {
                 >
                   Blog Management
                 </button>
-                <button
+                {/* <button
                   onClick={() => setActiveTab('comments')}
                   className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
                     activeTab === 'comments'
@@ -209,7 +209,7 @@ const Dashboard = () => {
                   }`}
                 >
                   Comments ({pendingComments})
-                </button>
+                </button> */}
               </div>
 
               {/* Overview Tab */}
@@ -296,7 +296,7 @@ const Dashboard = () => {
                       className="btn-primary flex items-center gap-2 mt-4 sm:mt-0"
                     >
                       <Plus className="w-4 h-4" />
-                      New Post
+                      New Blog Post
                     </button>
                   </div>
 
