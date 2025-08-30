@@ -45,7 +45,7 @@ const About = () => {
       name: 'Dr. Maria Papadopoulos',
       role: 'Director of Sustainability',
       image: '/images/papadopoulos.jpeg',
-      bio: 'Leading sustainability initiatives with over 15 years of environmental research experience.'
+      bio: 'Leading sustainability projects with over 15 years of environmental research experience.'
     },
     {
       name: 'Prof. Nikos Karaflas',
@@ -63,7 +63,7 @@ const About = () => {
       name: 'Alex Sifis',
       role: 'Student Coordinator',
       image: '/images/sifis.jpeg',
-      bio: 'Passionate student leader driving campus sustainability initiatives and student engagement.'
+      bio: 'Passionate student leader driving campus sustainability projects and student engagement.'
     }
   ]
 
@@ -71,7 +71,7 @@ const About = () => {
     {
       icon: TrophyIcon,
       title: 'Green Campus Award 2023',
-      description: 'Recognized for outstanding environmental initiatives'
+      description: 'Recognized for outstanding environmental projects'
     },
     {
       icon: GlobeAltIcon,
@@ -137,7 +137,7 @@ const About = () => {
               <p className={`text-xl leading-relaxed ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
                 To foster environmental awareness, promote sustainable practices, and inspire 
                 innovative solutions that contribute to a healthier planet. We strive to educate 
-                our community, conduct meaningful research, and implement practical initiatives 
+                our community, conduct meaningful research, and implement practical projects 
                 that make a lasting positive impact on our environment.
               </p>
             </div>
@@ -160,7 +160,7 @@ const About = () => {
             </h2>
             <p className="body-large text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
               These fundamental principles guide our approach to sustainability and shape 
-              every initiative we undertake.
+              every projects we undertake.
             </p>
           </motion.div>
 
@@ -325,7 +325,7 @@ const About = () => {
             </h2>
             <p className="body-large text-green-100 mb-8">
               Whether you're a student, faculty member, or community supporter, 
-              there are many ways to get involved in our sustainability initiatives.
+              there are many ways to get involved in our sustainability projects.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">

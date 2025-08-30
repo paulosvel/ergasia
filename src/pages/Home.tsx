@@ -188,24 +188,24 @@ const Home = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
             >
-              Join City College's sustainability initiative where innovation meets environmental responsibility. 
+              Join City College's sustainability project where innovation meets environmental responsibility. 
               Together, we're creating positive change that will impact generations to come.
             </motion.p>
 
             <motion.div 
-              className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+              className="flex flex-row gap-4 justify-center items-center"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.6 }}
             >
               <Link 
-                to="/initiatives"
+                to="/projects"
                 className="group btn-primary text-lg px-8 py-4 shadow-2xl hover:shadow-glow"
+                style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}
               >
-                Explore Initiatives
+                Explore Projects
                 <ArrowRightIcon className="w-5 h-5 ml-2 transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
-              
               <Link 
                 to="/about"
                 className="group bg-white/10 backdrop-blur-lg text-white font-semibold px-8 py-4 rounded-xl border border-white/20 hover:bg-white/20 transition-all duration-300 flex items-center"
