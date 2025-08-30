@@ -40,7 +40,7 @@ const Register = () => {
         email: data.email,
         password: data.password
       })
-      toast.success('Account created successfully! Welcome to City College!')
+      toast.success('Account created successfully! Your account is pending admin approval. You will be notified once approved.')
       navigate('/dashboard')
     } catch (error: any) {
       toast.error(error.message || 'Registration failed')

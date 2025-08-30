@@ -155,10 +155,7 @@ router.get(
       // Build filter
       const filter = {};
 
-      // Only show public projects unless user is authenticated
-      if (!req.user || req.user.role !== "admin") {
-        filter.isPublic = true;
-      }
+      // Show all projects to everyone (removed isPublic filter)
 
       if (type) filter.type = type;
       if (status) filter.status = status;
@@ -213,7 +210,6 @@ router.get("/featured", async (req, res) => {
   try {
     const projects = await Project.find({
       isFeatured: true,
-      isPublic: true,
     })
       .populate("createdBy", "fullname email")
       .sort({ createdAt: -1 })
@@ -239,7 +235,7 @@ router.get("/featured", async (req, res) => {
 router.get("/stats", async (req, res) => {
   try {
     const stats = await Project.aggregate([
-      { $match: { isPublic: true } },
+      { $match: {} }, // Include all projects
       {
         $group: {
           _id: null,
@@ -263,7 +259,7 @@ router.get("/stats", async (req, res) => {
     ]);
 
     const projectTypes = await Project.aggregate([
-      { $match: { isPublic: true } },
+      { $match: {} }, // Include all projects
       {
         $group: {
           _id: "$type",
@@ -304,10 +300,7 @@ router.get("/:id", optionalAuth, async (req, res) => {
   try {
     const filter = { _id: req.params.id };
 
-    // Only show public projects unless user is admin
-    if (!req.user || req.user.role !== "admin") {
-      filter.isPublic = true;
-    }
+    // Show all projects to everyone (removed isPublic filter)
 
     const project = await Project.findOne(filter)
       .populate("createdBy", "fullname email avatar")

@@ -76,6 +76,9 @@ interface BlogState {
   deletePost: (id: string) => Promise<void>
   toggleLike: (id: string) => Promise<void>
   addComment: (id: string, content: string) => Promise<BlogComment>
+  approveComment: (commentId: string) => Promise<void>
+  rejectComment: (commentId: string) => Promise<void>
+  deleteComment: (commentId: string) => Promise<void>
   clearError: () => void
   setCurrentPost: (post: BlogPost | null) => void
 }
@@ -301,9 +304,129 @@ export const useBlogStore = create<BlogState>((set, get) => ({
         })
       }
       
+      // Also update in the posts list
+      const currentPosts = get().posts
+      const updatedPosts = currentPosts.map(post => {
+        if (post._id === id) {
+          return {
+            ...post,
+            comments: [...post.comments, response.data]
+          }
+        }
+        return post
+      })
+      
+      set({ posts: updatedPosts })
+      
       return response.data
     } catch (error: any) {
       console.error('Failed to add comment:', error)
+      throw error
+    }
+  },
+
+  approveComment: async (commentId: string) => {
+    try {
+      await apiHelpers.put(`/blog/comments/${commentId}/approve`)
+      
+      // Update comment approval status in all posts
+      const currentPosts = get().posts
+      const updatedPosts = currentPosts.map(post => ({
+        ...post,
+        comments: post.comments.map(comment => 
+          comment._id === commentId 
+            ? { ...comment, isApproved: true }
+            : comment
+        )
+      }))
+      
+      set({ posts: updatedPosts })
+      
+      // Also update current post if it contains this comment
+      const currentPost = get().currentPost
+      if (currentPost) {
+        const updatedComments = currentPost.comments.map(comment => 
+          comment._id === commentId 
+            ? { ...comment, isApproved: true }
+            : comment
+        )
+        set({
+          currentPost: {
+            ...currentPost,
+            comments: updatedComments
+          }
+        })
+      }
+    } catch (error: any) {
+      console.error('Failed to approve comment:', error)
+      throw error
+    }
+  },
+
+  rejectComment: async (commentId: string) => {
+    try {
+      await apiHelpers.put(`/blog/comments/${commentId}/reject`)
+      
+      // Update comment approval status in all posts
+      const currentPosts = get().posts
+      const updatedPosts = currentPosts.map(post => ({
+        ...post,
+        comments: post.comments.map(comment => 
+          comment._id === commentId 
+            ? { ...comment, isApproved: false }
+            : comment
+        )
+      }))
+      
+      set({ posts: updatedPosts })
+      
+      // Also update current post if it contains this comment
+      const currentPost = get().currentPost
+      if (currentPost) {
+        const updatedComments = currentPost.comments.map(comment => 
+          comment._id === commentId 
+            ? { ...comment, isApproved: false }
+            : comment
+        )
+        set({
+          currentPost: {
+            ...currentPost,
+            comments: updatedComments
+          }
+        })
+      }
+    } catch (error: any) {
+      console.error('Failed to reject comment:', error)
+      throw error
+    }
+  },
+
+  deleteComment: async (commentId: string) => {
+    try {
+      await apiHelpers.delete(`/blog/comments/${commentId}`)
+      
+      // Remove comment from all posts
+      const currentPosts = get().posts
+      const updatedPosts = currentPosts.map(post => ({
+        ...post,
+        comments: post.comments.filter(comment => comment._id !== commentId)
+      }))
+      
+      set({ posts: updatedPosts })
+      
+      // Also remove from current post if it contains this comment
+      const currentPost = get().currentPost
+      if (currentPost) {
+        const updatedComments = currentPost.comments.filter(comment => comment._id !== commentId)
+        set({
+          currentPost: {
+            ...currentPost,
+            comments: updatedComments
+          }
+        })
+      }
+    } catch (error: any) {
+      console.error('Failed to delete comment:', error)
       throw error
     }
   },

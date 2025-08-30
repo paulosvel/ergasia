@@ -9,6 +9,7 @@ export interface User {
   role: 'user' | 'admin'
   avatar?: string
   emailVerified: boolean
+  approved: boolean
   isActive: boolean
   lastLogin?: string
   createdAt: string
@@ -64,8 +65,8 @@ export const useAuthStore = create<AuthState>()(
           
           const response = await api.post('/auth/register', data)
           
-          // Note: Registration might not automatically log in the user
-          // depending on email verification requirements
+          // Note: Registration doesn't automatically log in the user
+          // since they need admin approval first
           
           set({ isLoading: false })
           

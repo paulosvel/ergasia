@@ -29,7 +29,7 @@ const Home = () => {
   useEffect(() => {
     // Fetch project stats when component mounts
     fetchProjectStats()
-  }, [fetchProjectStats])
+  }, [])
 
   const statsDisplay = [
     {

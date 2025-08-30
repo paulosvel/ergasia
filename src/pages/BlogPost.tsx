@@ -387,8 +387,10 @@ const BlogPost = () => {
                 currentPost.comments
                   .filter(comment => comment.isApproved)
                   .map((comment) => (
-                    <div 
-                      key={comment._id} 
+                    <motion.div 
+                      key={comment._id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
                       className={`p-4 rounded-lg ${
                         isDark ? 'bg-secondary-800' : 'bg-gray-50'
                       }`}
@@ -423,7 +425,7 @@ const BlogPost = () => {
                           </p>
                         </div>
                       </div>
-                    </div>
+                    </motion.div>
                   ))
               )}
             </div>

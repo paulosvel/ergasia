@@ -10,7 +10,6 @@ import Footer from '@components/layout/Footer'
 // Pages
 import Home from '@pages/Home'
 import About from '@pages/About'
-import Initiatives from '@pages/Initiatives'
 import Blog from '@pages/Blog'
 import BlogPost from '@pages/BlogPost'
 import Gallery from '@pages/Gallery'
@@ -18,6 +17,9 @@ import Contact from '@pages/Contact'
 import Login from '@pages/auth/Login'
 import Register from '@pages/auth/Register'
 import Dashboard from '@pages/Dashboard'
+import AdminDashboard from '@pages/AdminDashboard'
+import BlogManagement from '@pages/BlogManagement'
+import CommentManagement from '@pages/CommentManagement'
 import AddProject from '@pages/AddProject'
 import Projects from '@pages/Projects'
 import ProjectDetail from '@pages/ProjectDetail'
@@ -57,7 +59,6 @@ function App() {
           {/* Public routes */}
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
-          <Route path="/initiatives" element={<Initiatives />} />
           <Route path="/projects" element={<Projects />} />
           <Route path="/projects/:id" element={<ProjectDetail />} />
           <Route path="/blog" element={<Blog />} />
@@ -79,6 +80,24 @@ function App() {
           <Route path="/add-project" element={
             <ProtectedRoute requireAdmin>
               <AddProject />
+            </ProtectedRoute>
+          } />
+          
+          <Route path="/admin" element={
+            <ProtectedRoute requireAdmin>
+              <AdminDashboard />
+            </ProtectedRoute>
+          } />
+          
+          <Route path="/admin/blog" element={
+            <ProtectedRoute requireAdmin>
+              <BlogManagement />
+            </ProtectedRoute>
+          } />
+          
+          <Route path="/admin/comments" element={
+            <ProtectedRoute requireAdmin>
+              <CommentManagement />
             </ProtectedRoute>
           } />
           

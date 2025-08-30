@@ -14,14 +14,7 @@ const api = axios.create({
 // Request interceptor
 api.interceptors.request.use(
   (config) => {
-    // Add timestamp to prevent caching
-    if (config.method === 'get') {
-      config.params = {
-        ...config.params,
-        _t: Date.now()
-      }
-    }
-    
+    // Allow browser caching for GET requests to reduce server load
     return config
   },
   (error) => {
@@ -35,12 +28,18 @@ api.interceptors.response.use(
     return response
   },
   (error: AxiosError<any>) => {
-    const message = error.response?.data?.message || error.message || 'An error occurred'
-    
     // Handle specific error cases
     if (error.response?.status === 401) {
-      // Unauthorized - redirect to login or show auth modal
-      if (window.location.pathname !== '/login') {
+      // Only redirect to login for auth-required endpoints, but not for auth status checks
+      // Don't redirect for public endpoints or auth status checks
+      const url = error.config?.url || ''
+      const isAuthStatusCheck = url.includes('/auth/status')
+      const isPublicEndpoint = url.includes('/projects') || 
+                               url.includes('/blog') || 
+                               url.includes('/stats') ||
+                               url.includes('/featured')
+      
+      if (!isPublicEndpoint && !isAuthStatusCheck && window.location.pathname !== '/login') {
         toast.error('Please log in to continue')
         window.location.href = '/login'
       }
@@ -50,7 +49,10 @@ api.interceptors.response.use(
     } else if (error.response?.status === 404) {
       // Not found
       toast.error('Resource not found')
-    } else if (error.response?.status >= 500) {
+    } else if (error.response?.status === 429) {
+      // Rate limit exceeded
+      toast.error('Too many requests. Please wait a moment and try again.')
+    } else if (error.response && error.response.status >= 500) {
       // Server error
       toast.error('Server error. Please try again later.')
     } else if (error.code === 'NETWORK_ERROR' || error.code === 'ECONNABORTED') {

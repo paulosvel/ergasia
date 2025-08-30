@@ -43,6 +43,10 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
+    approved: {
+      type: Boolean,
+      default: false,
+    },
     lastLogin: {
       type: Date,
       default: null,
@@ -62,6 +66,7 @@ const userSchema = new mongoose.Schema(
 // Index for performance
 userSchema.index({ email: 1 });
 userSchema.index({ role: 1 });
+userSchema.index({ approved: 1 });
 
 // Pre-save middleware to hash password
 userSchema.pre("save", async function (next) {

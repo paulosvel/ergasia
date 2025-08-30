@@ -83,6 +83,7 @@ router.post("/register", registerValidation, async (req, res) => {
       fullname,
       email,
       password, // Will be hashed by the pre-save middleware
+      approved: false, // New users need admin approval
     });
 
     await user.save();
@@ -94,13 +95,15 @@ router.post("/register", registerValidation, async (req, res) => {
     // Return user data (password excluded by schema transform)
     res.status(201).json({
       success: true,
-      message: "User registered successfully",
+      message:
+        "User registered successfully. Your account is pending admin approval before you can log in.",
       user: {
         _id: user._id,
         fullname: user.fullname,
         email: user.email,
         role: user.role,
         emailVerified: user.emailVerified,
+        approved: user.approved,
         createdAt: user.createdAt,
       },
     });
@@ -147,6 +150,15 @@ router.post("/login", loginValidation, async (req, res) => {
       });
     }
 
+    // Check if user is approved (except for admins)
+    if (!user.approved && user.role !== "admin") {
+      return res.status(401).json({
+        success: false,
+        message:
+          "Your account is pending approval. Please wait for admin approval before logging in.",
+      });
+    }
+
     // Verify password
     const isPasswordValid = await user.comparePassword(password);
     if (!isPasswordValid) {
@@ -174,6 +186,7 @@ router.post("/login", loginValidation, async (req, res) => {
         email: user.email,
         role: user.role,
         emailVerified: user.emailVerified,
+        approved: user.approved,
         lastLogin: user.lastLogin,
         createdAt: user.createdAt,
       },
@@ -200,6 +213,7 @@ router.get("/status", authenticateToken, async (req, res) => {
         email: req.user.email,
         role: req.user.role,
         emailVerified: req.user.emailVerified,
+        approved: req.user.approved,
         lastLogin: req.user.lastLogin,
         createdAt: req.user.createdAt,
       },
